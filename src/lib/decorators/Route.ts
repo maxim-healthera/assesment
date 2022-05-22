@@ -13,7 +13,7 @@ const Route =
     ) {
       try {
         const fnReturn = await originalRouteHandler.call(this, req, res, next);
-        res.status(200).json(fnReturn);
+        res.status(200).json({ data: fnReturn });
       } catch (err) {
         next(err);
       }

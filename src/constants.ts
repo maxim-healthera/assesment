@@ -6,3 +6,7 @@ export enum HttpStatusCode {
   NOT_FOUND = 404,
   INTERNAL_SERVER = 500,
 }
+export enum QueueActions {
+  TICKET_ASSIGNED = 'ticketAssignedtoUserEmail',
+  ADDED_TO_PROJECT = 'userAddedToProjectEmail',
+}

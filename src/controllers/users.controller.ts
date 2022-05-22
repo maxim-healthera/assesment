@@ -14,17 +14,23 @@ export default class UsersController extends BaseController {
   }
 
   @Route()
-  async createUser(req: Request, res: Response, next: NextFunction) {
+  createUser(req: Request, res: Response, next: NextFunction) {
     const { lastName, firstName, email } = req.body;
-    const data = await this.userService.createUser({
+    return this.userService.createUser({
       lastName,
       firstName,
       email,
     });
-    return data;
+  }
+
+  @Route()
+  getSingleUserInfo(req: Request, res: Response, next: NextFunction) {
+    const { userId } = req.params;
+    return this.userService.getSingleUserInfo(+userId);
   }
 
   initRoutes(): void {
     this.router.post('/', this.createUser);
+    this.router.get('/:userId', this.getSingleUserInfo);
   }
 }

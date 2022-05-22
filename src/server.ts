@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import ProjectsController from './controllers/projects.controller';
 import UsersController from './controllers/users.controller';
 import errorHandler from './lib/middlewares/errorHandler';
+import TicketsController from './controllers/tickets.controller';
 
 @Service()
 export default class App {
@@ -17,7 +18,8 @@ export default class App {
   @Inject('users.controller')
   private usersController: UsersController;
 
-  
+  @Inject('tickets.controller')
+  private ticketsController: TicketsController;
 
   constructor() {
     this.app = express();
@@ -34,7 +36,8 @@ export default class App {
   }
   initRoutes() {
     this.app.use('/api/projects', this.projectsController.router);
-    this.app.use("/api/users", this.usersController.router);
+    this.app.use('/api/users', this.usersController.router);
+    this.app.use('/api/tickets', this.ticketsController.router);
     this.app.use(errorHandler);
     return this;
   }

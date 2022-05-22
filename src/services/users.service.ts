@@ -1,40 +1,37 @@
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { CreateUserDto } from '../dto/users.dto';
+import { Ticket } from '../entities/Ticket.model';
 import { User } from '../entities/User.model';
 import UserRepository from '../repositories/users.repository';
+import { EntitySelectFields, FindOneCustomOptions, ID } from '../types';
 
 @Service()
 class UserService {
   constructor(@InjectRepository(User) private userRepository: UserRepository) {}
 
-//   async deleteUser(id: string) {
-//     const data = await this.userRepository.delete(id);
-//     if (!data?.affected) {
-//       throw new Error('Error while deleting user');
-//     }
-//     return data;
-//   }
+  async getSingleUserInfo(
+    id: ID,
+    options: FindOneCustomOptions<User> = {}
+  ): Promise<User> {
+    const user = await this.userRepository.findOne(id, options);
+    return user;
+  }
 
-  //   async getEventsOfSingleUser(id: number) {
-  //     const user = await this.userRepository.findOne(id, {
-  //       relations: ["events"],
-  //     });
-  //     if (!user) {
-  //       throw new CustomError(HttpStatusCode.NOT_FOUND, "User not found");
-  //     }
-  //     return user.events;
-  //   }
-
-//   findAllUsers() {
-//     return this.userRepository.find({
-//       select: ['id', 'firstName', 'lastName', 'email'],
-//     });
-//   }
+  findAllUsers() {
+    return this.userRepository.find({
+      select: ['id', 'firstName', 'lastName', 'email'],
+    });
+  }
 
   async createUser(body: CreateUserDto) {
     const newUser = await this.userRepository.insert(body);
     return newUser;
+  }
+
+  attachTicketToUser(user: User, ticket: Ticket): Promise<User> {
+    user.tickets.push(ticket);
+    return this.userRepository.save(user);
   }
 }
 export default UserService;

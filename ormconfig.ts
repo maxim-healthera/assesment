@@ -1,3 +1,5 @@
+import { Project } from './src/entities/Project.model';
+import { Ticket } from './src/entities/Ticket.model';
 import { User } from './src/entities/User.model';
 
 const config = {
@@ -6,7 +8,7 @@ const config = {
   port: +process.env.DB_PORT,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  entities: [User],
+  entities: [User, Project, Ticket],
   synchronize: true,
   logging: false,
   database: process.env.DB_NAME,

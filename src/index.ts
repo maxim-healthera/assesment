@@ -1,13 +1,14 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
-dotenv.config();
-
 import Container from 'typedi';
 import 'reflect-metadata';
+
+dotenv.config();
 import App from './server';
 import setupDb from './setupDB';
+import queue from './services/queue.service';
 
-setupDb()
+Promise.all([setupDb(), queue.connect()])
   .then(() => {
     Container.get(App).initRoutes().startServer();
   })

@@ -1,16 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../../constants";
+import { NextFunction, Request, Response } from 'express';
+import { HttpStatusCode } from '../../constants';
 
 export default function errorHandler(
   error: Error,
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const statusCode = HttpStatusCode.INTERNAL_SERVER;
   const response = {
     message: error.message,
   };
+  console.log(error);
 
   res.status(statusCode).json(response);
 }

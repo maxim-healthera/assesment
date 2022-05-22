@@ -1,19 +1,14 @@
+import 'reflect-metadata';
 import dotenv from 'dotenv';
+dotenv.config();
+
 import Container from 'typedi';
 import 'reflect-metadata';
-import AppDataSource from './setupDB';
 import App from './server';
+import setupDb from './setupDB';
 
-dotenv.config();
-console.log('first')
-
-// const server = AppDataSource.initialize()
-// new Promise(() => {})
-//   .then(() => {
-//       console.log('as')
-//     Container.get(App).initRoutes().startServer();
-//   })
-//   .catch((error) => console.log(error));
-
-// export default server;
-Container.get(App).initRoutes().startServer();
+setupDb()
+  .then(() => {
+    Container.get(App).initRoutes().startServer();
+  })
+  .catch((error) => console.log(error));

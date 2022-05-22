@@ -1,5 +1,6 @@
 import { NextFunction, Router, Request, Response } from 'express';
 import { Service } from 'typedi';
+import Route from '../lib/decorators/Route';
 import BaseController from '../types/BaseController';
 
 @Service('projects.controller')
@@ -11,6 +12,7 @@ export default class ProjectsController extends BaseController {
     this.initRoutes();
   }
 
+  @Route()
   createProject(req: Request, res: Response, next: NextFunction) {}
   initRoutes(): void {
     this.router.post('/', this.createProject);

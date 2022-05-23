@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  # app:
+  # container_name: assesment_api
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./src:/app/src
+  #   ports:
+  #     - "4000:4000"
+  postgres:
+    container_name: assesment_db
+    image: 'postgres:12'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+    env_file:
+      - .env 
+volumes:
+  pgdata1: {}

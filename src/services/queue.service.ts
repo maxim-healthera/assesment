@@ -18,7 +18,7 @@ class QueueService {
     await this.channel.assertQueue(this.queue);
     console.log(
       chalk.green(
-        `connection to queue established: ${this.connection.connection} / ${this.queue}`
+        `connection to queue established: ${this.connection.connection.serverProperties.platform} / ${this.queue}`
       )
     );
   }

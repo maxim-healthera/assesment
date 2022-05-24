@@ -1,6 +1,8 @@
 import { createClient, RedisClientType } from 'redis';
+import { Service } from 'typedi';
 
-export default class Redis {
+@Service()
+export default class RedisService {
   private client: RedisClientType;
   constructor() {
     this.client = createClient({
@@ -13,7 +15,8 @@ export default class Redis {
     return JSON.parse(cachedData) as T;
   }
 
-  async set<T>(key: string, value: T, options?: Record<string, string>) {
-    // await this.client.set(key, value, options);
+  //todo type properly
+  async set(key: string, value: any, options?: Record<string, string>) {
+    await this.client.set(key, value);
   }
 }

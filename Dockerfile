@@ -5,11 +5,12 @@ WORKDIR /app
 
 COPY  package*.json ./
 EXPOSE 4000
+ARG config
 
-# RUN npm run build
 
 FROM base as production
 RUN npm install
 COPY . .
+COPY ${config} .env
 RUN npm run build
 CMD ["node", "./dist/src/index.js" ]

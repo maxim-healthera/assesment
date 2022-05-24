@@ -5,10 +5,14 @@ import { Ticket } from '../entities/Ticket.model';
 import { User } from '../entities/User.model';
 import UserRepository from '../repositories/users.repository';
 import { EntitySelectFields, FindOneCustomOptions, ID } from '../types';
+import RedisService from './redis.service';
 
 @Service()
 class UserService {
-  constructor(@InjectRepository(User) private userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(User) private userRepository: UserRepository,
+    private readonly redisService: RedisService
+  ) {}
 
   async getSingleUserInfo(
     id: ID,
@@ -18,7 +22,8 @@ class UserService {
     return user;
   }
 
-  findAllUsers() {
+  async findAllUsers() {
+    await this.redisService.set('hello', 'world');
     return this.userRepository.find({
       select: ['id', 'firstName', 'lastName', 'email'],
     });

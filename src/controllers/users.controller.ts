@@ -29,8 +29,14 @@ export default class UsersController extends BaseController {
     return this.userService.getSingleUserInfo(+userId);
   }
 
+  @Route()
+  getAllusers(req: Request, res: Response, next: NextFunction) {
+    return this.userService.findAllUsers()
+  }
+
   initRoutes(): void {
     this.router.post('/', this.createUser);
     this.router.get('/:userId', this.getSingleUserInfo);
+    this.router.get('/', this.getAllusers);
   }
 }

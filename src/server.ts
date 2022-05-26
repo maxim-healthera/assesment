@@ -1,8 +1,8 @@
 import { Application } from 'express';
 import express from 'express';
-import { join } from 'path';
 import { Inject, Service } from 'typedi';
 import chalk from 'chalk';
+import compression from 'compression'
 import ProjectsController from './controllers/projects.controller';
 import UsersController from './controllers/users.controller';
 import errorHandler from './lib/middlewares/errorHandler';
@@ -25,6 +25,7 @@ export default class App {
     this.app = express();
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
+    this.app.use(compression())
   }
   startServer() {
     const PORT = process.env.PORT;

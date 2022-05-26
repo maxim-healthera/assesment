@@ -27,15 +27,11 @@ services:
       - db:/var/lib/postgresql/data
     env_file:
       - .env-prod 
-  # redis:
-  #   image: redis:6.2-alpine
-  #   restart: always
-  #   ports:
-  #     - '6379:6379'
-  #   volumes: 
-  #     - cache:/data
+  redis-server:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
 volumes:
   db:
     driver: local
-  # redis:
-  #   driver: local

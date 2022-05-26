@@ -5,21 +5,22 @@ import { Project } from '../entities/Project.model';
 import { User } from '../entities/User.model';
 import ProjectsRepository from '../repositories/projects.repository';
 import UserRepository from '../repositories/users.repository';
-import {
-  CreateSuccessResponse,
-  EntitySelectFields,
-  FindOneCustomOptions,
-  ID,
-} from '../types';
+import { CreateSuccessResponse, FindOneCustomOptions, ID } from '../types';
+import queueService from './queue.service';
+import redisService from './redis.service';
 import UserService from './users.service';
 
 @Service()
 class ProjectService {
+  private redisService;
+  private queueService;
   constructor(
     @InjectRepository(Project) private projectsRepository: ProjectsRepository,
-    @InjectRepository(User) private usersRepository: UserRepository,
     private readonly usersService: UserService
-  ) {}
+  ) {
+    this.redisService = redisService;
+    this.queueService = queueService;
+  }
 
   getAllProjects() {
     return this.projectsRepository.find({
@@ -37,6 +38,16 @@ class ProjectService {
   async createProject(body: CreateProjectDto): Promise<CreateSuccessResponse> {
     const newProject = await this.projectsRepository.insert(body);
     return { id: newProject.identifiers[0].id, success: true };
+  }
+
+  async getProjectStats(projectId: ID): Promise<Project> {
+    const key = `project-stats-${projectId}`;
+    return this.redisService.get(key, () =>
+      this.getSingleProjectInfo(projectId, {
+        relations: ['users', 'tickets'],
+        select: ['id'],
+      })
+    );
   }
 
   async addUserToProject(body: AddUserToProjectDto): Promise<string> {
@@ -62,6 +73,12 @@ class ProjectService {
     }
     projectFromDb.users.push(userFromDb);
     await this.projectsRepository.save(projectFromDb);
+
+    this.queueService.sendToQueue('userAddedToProjectEmail', {
+      userFullName: `${userFromDb.firstName} ${userFromDb.lastName}`,
+      projectTitle: projectFromDb.title,
+      userEmail: userFromDb.email,
+    });
     return `user ${userFromDb.firstName} ${userFromDb.lastName} added to ${projectFromDb.title}`;
   }
 }

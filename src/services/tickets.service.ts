@@ -2,12 +2,8 @@ import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { QueueActions } from '../constants';
 import { CreateTicketDto } from '../dto/tickets.dto';
-import { Project } from '../entities/Project.model';
 import { Ticket } from '../entities/Ticket.model';
-import { User } from '../entities/User.model';
-import ProjectsRepository from '../repositories/projects.repository';
 import TicketsRepository from '../repositories/tickets.repository';
-import UserRepository from '../repositories/users.repository';
 import { CreateSuccessResponse, EntitySelectFields, ID } from '../types';
 import ProjectService from './projects.service';
 import queueService from './queue.service';
@@ -20,7 +16,7 @@ class TicketsService {
     @InjectRepository(Ticket)
     private readonly ticketsRepository: TicketsRepository,
     private readonly projectsService: ProjectService,
-    private readonly usersService: UserService // @InjectRepository(User) private usersRepository: UserRepository, // @InjectRepository(Project) private projectsRepository: ProjectsRepository,
+    private readonly usersService: UserService
   ) {
     this.queueService = queueService;
   }

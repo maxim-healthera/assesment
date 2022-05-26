@@ -4,15 +4,18 @@ import { CreateUserDto } from '../dto/users.dto';
 import { Ticket } from '../entities/Ticket.model';
 import { User } from '../entities/User.model';
 import UserRepository from '../repositories/users.repository';
-import { EntitySelectFields, FindOneCustomOptions, ID } from '../types';
-import RedisService from './redis.service';
+import { FindOneCustomOptions, ID } from '../types';
+import redisService from './redis.service';
+
 
 @Service()
 class UserService {
+  private redisService: any
   constructor(
     @InjectRepository(User) private userRepository: UserRepository,
-    private readonly redisService: RedisService
-  ) {}
+  ) {
+    this.redisService = redisService
+  }
 
   async getSingleUserInfo(
     id: ID,

@@ -1,4 +1,4 @@
-import { NextFunction, Router, Request, Response } from 'express';
+import { Router, Request } from 'express';
 import { Service } from 'typedi';
 import { Project } from '../entities/Project.model';
 import Route from '../lib/decorators/Route';
@@ -37,9 +37,16 @@ export default class ProjectsController extends BaseController {
     });
   }
 
+  @Route()
+  getProjectStats(req: Request): Promise<Project> {
+    const { projectId } = req.params;
+    return this.projectsService.getProjectStats(+projectId);
+  }
+
   initRoutes(): void {
     this.router.post('/', this.createProject);
     this.router.get('/:projectId', this.getSingleProjectInfo);
+    this.router.get('/:projectId/stats', this.getProjectStats);
     this.router.put('/:projectId/users', this.addUserToProject);
   }
 }

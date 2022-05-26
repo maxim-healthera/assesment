@@ -1,7 +1,5 @@
 import { NextFunction, Response } from 'express';
-// import { validationResult } from 'express-validator';
 
-//todo
 const Route =
   () =>
   (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {

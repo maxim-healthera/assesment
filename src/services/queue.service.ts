@@ -1,4 +1,3 @@
-import { Service } from 'typedi';
 import amqplib from 'amqplib';
 import chalk from 'chalk';
 

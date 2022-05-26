@@ -1,7 +1,6 @@
-import { NextFunction, Router, Request, Response } from 'express';
+import { Router, Request } from 'express';
 import { Service } from 'typedi';
 import Route from '../lib/decorators/Route';
-import ProjectService from '../services/projects.service';
 import TicketsService from '../services/tickets.service';
 import BaseController from '../types/BaseController';
 

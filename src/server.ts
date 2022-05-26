@@ -27,7 +27,7 @@ export default class App {
     this.app.use(express.json());
   }
   startServer() {
-    const PORT = process.env.PORT || 4000;
+    const PORT = process.env.PORT;
 
     this.app.listen(PORT, () => {
       console.log(chalk.green(`server is running on port ${PORT}`));

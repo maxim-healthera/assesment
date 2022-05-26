@@ -7,8 +7,9 @@ dotenv.config();
 import App from './server';
 import setupDb from './setupDB';
 import queue from './services/queue.service';
+import redis from './services/redis.service';
 
-Promise.all([setupDb(), queue.connect()])
+Promise.all([setupDb(), queue.connect(), redis.connect()])
   .then(() => {
     Container.get(App).initRoutes().startServer();
   })

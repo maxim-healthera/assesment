@@ -18,7 +18,7 @@ services:
     container_name: postgres
     image: 'postgres:12'
     ports:
-      - '8001:5432'
+      - '3000:5432'
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -31,7 +31,7 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '6379:6379'
+      - '8000:6379'
 volumes:
   db:
     driver: local
